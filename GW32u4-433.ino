@@ -1,12 +1,11 @@
-/* RFM69 library and code by Felix Rusu - felix@lowpowerlab.com
-// Get libraries at: https://github.com/LowPowerLab/
-// Make sure you adjust the settings in the configuration section below !!!
-// **********************************************************************************
-// Copyright Felix Rusu, LowPowerLab.com
-// Library and code by Felix Rusu - felix@lowpowerlab.com
-// **********************************************************************************
+// *********************************************************************************************
+// Copyright Autonomii.com
+// Author : Dennis Huang dennis@autonomii.com
+// Sketches based on library and code from LowPowerLab.com's wonderful RFM69 libraries
+// for the HopeRF RFM69 radios.
+// *********************************************************************************************
 // License
-// **********************************************************************************
+// *********************************************************************************************
 // This program is free software; you can redistribute it 
 // and/or modify it under the terms of the GNU General    
 // Public License as published by the Free Software       
@@ -28,11 +27,14 @@
 //
 // Please maintain this license information along with authorship
 // and copyright notices in any redistribution of this code
-// **********************************************************************************/
+//
+// Copyright Felix Rusu, LowPowerLab.com
+// RFM69 Library by Felix Rusu - felix@lowpowerlab.com
 
-//*********************************************************************************************
-// *********** IMPORTANT SETTINGS - YOU MUST CHANGE/ONFIGURE TO FIT YOUR HARDWARE *************
-//*********************************************************************************************
+
+// *********************************************************************************************
+// ************ IMPORTANT SETTINGS - YOU MUST CHANGE/ONFIGURE TO FIT YOUR HARDWARE *************
+// *********************************************************************************************
 #define NETWORKID     100                   // The same on all nodes that talk to each other
 #define NODEID        2                     // The unique identifier of this node
 #define RECEIVER      1                     // The recipient of packets
@@ -45,7 +47,7 @@
 #define RFM69_RST     4                     // RFM69 radio reset pin
 #define LED           13                    // onboard LED
 #define SERIAL_BAUD   115200
-//*********************************************************************************************
+// *********************************************************************************************
 
 #include <RFM69.h>    //get it here: https://www.github.com/lowpowerlab/rfm69
 #include <SPI.h>
@@ -55,7 +57,7 @@ int16_t packetnum = 0;  // packet counter, we increment per xmission
 RFM69 radio = RFM69(RFM69_CS, RFM69_IRQ, IS_RFM69HCW, RFM69_IRQN);
 
 void setup() {
-//  while (!Serial); // wait until serial console is open, remove if not tethered to computer
+//  while (!Serial); // wait until Serial Monitor is open. Comment out if not connecting to computer.
   Serial.begin(SERIAL_BAUD);
 
   Serial.println("NODii Gateway");
@@ -72,7 +74,7 @@ void setup() {
   if (IS_RFM69HCW) {
     radio.setHighPower();    // Only for RFM69HCW & HW!
   }
-  radio.setPowerLevel(31); // power output ranges from 0 (W -18dBm /HW 5dBm) to 31 (W 13dBm /HW 20dBm)
+  radio.setPowerLevel(31);   // power output ranges from 0 (W -18dBm /HW 5dBm) to 31 (W 13dBm /HW 20dBm)
   
   radio.encrypt(ENCRYPTKEY);
   
@@ -82,31 +84,17 @@ void setup() {
   Serial.println(" MHz");
 }
 
-
 void loop() {
-  delay(1000);  // Wait 1 second between transmits, could also 'sleep' here!
+  delay(1000);  // Wait 1 second between transmits
     
   char radiopacket[20] = "Hello World #";
   itoa(packetnum++, radiopacket+13, 10);
   Serial.print("Sending "); Serial.println(radiopacket);
     
-  if (radio.sendWithRetry(RECEIVER, radiopacket, strlen(radiopacket))) { //target node Id, message as string or byte array, message length
+  if (radio.sendWithRetry(RECEIVER, radiopacket, strlen(radiopacket))) { 
     Serial.println("OK");
-    Blink(LED, 50, 3); //blink LED 3 times, 50ms between blinks
   }
 
   radio.receiveDone(); //put radio in RX mode
   Serial.flush(); //make sure all serial data is clocked out before sleeping the MCU
-}
-
-
-void Blink(byte PIN, byte DELAY_MS, byte loops)
-{
-  for (byte i=0; i<loops; i++)
-  {
-    digitalWrite(PIN,HIGH);
-    delay(DELAY_MS);
-    digitalWrite(PIN,LOW);
-    delay(DELAY_MS);
-  }
 }
