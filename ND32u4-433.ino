@@ -1,12 +1,11 @@
-/* RFM69 library and code by Felix Rusu - felix@lowpowerlab.com
-// Get libraries at: https://github.com/LowPowerLab/
-// Make sure you adjust the settings in the configuration section below !!!
-// **********************************************************************************
-// Copyright Felix Rusu, LowPowerLab.com
-// Library and code by Felix Rusu - felix@lowpowerlab.com
-// **********************************************************************************
+// *********************************************************************************************
+// Copyright Autonomii.com
+// Author : Dennis Huang dennis@autonomii.com
+// Sketches based on library and code from LowPowerLab.com's wonderful RFM69 libraries
+// for the HopeRF RFM69 radios.
+// *********************************************************************************************
 // License
-// **********************************************************************************
+// *********************************************************************************************
 // This program is free software; you can redistribute it 
 // and/or modify it under the terms of the GNU General    
 // Public License as published by the Free Software       
@@ -21,19 +20,21 @@
 //                                                        
 // You should have received a copy of the GNU General    
 // Public License along with this program.
-// If not, see <http://www.gnu.org/licenses></http:>.
+// If not, see <http://www.gnu.org/licenses/>.
 //                                                        
 // Licence can be viewed at                               
 // http://www.gnu.org/licenses/gpl-3.0.txt
 //
 // Please maintain this license information along with authorship
 // and copyright notices in any redistribution of this code
-// **********************************************************************************/
+//
+// Copyright Felix Rusu, LowPowerLab.com
+// RFM69 Library by Felix Rusu - felix@lowpowerlab.com
 
 
-//*********************************************************************************************
-// *********** IMPORTANT SETTINGS - YOU MUST CHANGE/ONFIGURE TO FIT YOUR HARDWARE *************
-//*********************************************************************************************
+// *********************************************************************************************
+// ************ IMPORTANT SETTINGS - YOU MUST CHANGE/ONFIGURE TO FIT YOUR HARDWARE *************
+// *********************************************************************************************
 #define NETWORKID     100                   // The same on all nodes that talk to each other
 #define NODEID        1                     // The unique identifier of this node
 #define FREQUENCY     RF69_433MHZ           // change to RF69_868MHZ or RF69_915MHZ depending on radio
@@ -55,7 +56,7 @@ int16_t packetnum = 0;  // packet counter, we increment per xmission
 RFM69 radio = RFM69(RFM69_CS, RFM69_IRQ, IS_RFM69HCW, RFM69_IRQN);
 
 void setup() {
-  while (!Serial); // wait until serial console is open, remove if not tethered to computer
+  while (!Serial); // wait until Serial Monitor is open. Comment out if not connecting to computer.
   Serial.begin(SERIAL_BAUD);
 
   Serial.println("NODii Node");
@@ -100,21 +101,9 @@ void loop() {
         radio.sendACK();
         Serial.println(" - ACK sent");
       }
-      Blink(LED, 40, 3); //blink LED 3 times, 40ms between blinks
     }  
   }
 
   radio.receiveDone(); //put radio in RX mode
   Serial.flush(); //make sure all serial data is clocked out before sleeping the MCU
-}
-
-void Blink(byte PIN, byte DELAY_MS, byte loops)
-{
-  for (byte i=0; i<loops; i++)
-  {
-    digitalWrite(PIN,HIGH);
-    delay(DELAY_MS);
-    digitalWrite(PIN,LOW);
-    delay(DELAY_MS);
-  }
 }
