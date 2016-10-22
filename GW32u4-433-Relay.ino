@@ -87,7 +87,7 @@ void setup() {
 void loop() {
 
   // Send OPEN command to Relay node 
-  delay(5000);
+  delay(1000);
   char* radiopacket = "OPEN";
   Serial.print("Sending "); Serial.println(radiopacket);
   if (radio.sendWithRetry(RECEIVER, radiopacket, strlen(radiopacket))) { 
@@ -95,7 +95,7 @@ void loop() {
   }
 
   // Send CLOSE command to Relay node
-  delay(5000);
+  delay(1000);
   radiopacket = "CLOSE";
   Serial.print("Sending "); Serial.println(radiopacket);
   if (radio.sendWithRetry(RECEIVER, radiopacket, strlen(radiopacket))) { 
