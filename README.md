@@ -1,2 +1,1 @@
-Designed by Autonomii
-Creative Commons Attribution, Share-Alike license. All text above must be included in any redistribution.
+This repository contains code, board files and more for Autonomii's NODii products.  We spend a great deal of time working out the details and Open Source our projects. So please pay it forward and we hope you consider purchasing from us on your projects.
